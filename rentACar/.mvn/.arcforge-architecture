@@ -1,0 +1,29 @@
+{
+  "graphNodePositions": {
+    "arch:entry": {
+      "x": 0,
+      "y": 0
+    },
+    "arch:arch_listener:logusercreated:1773092779713-l3kpgkfi": {
+      "x": 1986.0628662660415,
+      "y": 276.17927545070324
+    },
+    "arch:arch_eloquent:eloquent:1773092779713-l3kpgkfi": {
+      "x": 1980,
+      "y": 89
+    },
+    "arch:arch_resource:userresource:1773092779713-l3kpgkfi": {
+      "x": 911.6449121893497,
+      "y": 337.06286626604157
+    },
+    "arch:arch_bounded_context:1773092809197:Bounded_Context": {
+      "x": 1220,
+      "y": 333
+    }
+  },
+  "graphViewport": {
+    "x": 180.40112210776056,
+    "y": 117.56226774878462,
+    "zoom": 0.757858283255199
+  }
+}

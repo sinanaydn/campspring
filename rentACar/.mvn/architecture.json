@@ -1,0 +1,242 @@
+{
+  "arcforge": "arcforge:architecture",
+  "version": "1.0",
+  "nodes": [
+    {
+      "id": "arch:entry",
+      "type": "arch_entry",
+      "label": "Entry",
+      "metadata": {}
+    },
+    {
+      "id": "arch:arch_middleware:authmiddleware:1773092779713-l3kpgkfi",
+      "type": "arch_middleware",
+      "label": "AuthMiddleware",
+      "metadata": {}
+    },
+    {
+      "id": "arch:arch_router:router:1773092779713-l3kpgkfi",
+      "type": "arch_router",
+      "label": "Router",
+      "metadata": {}
+    },
+    {
+      "id": "arch:arch_controller:usercontroller:1773092779713-l3kpgkfi",
+      "type": "arch_controller",
+      "label": "UserController",
+      "metadata": {}
+    },
+    {
+      "id": "arch:arch_form_request:storeuserrequest:1773092779713-l3kpgkfi",
+      "type": "arch_form_request",
+      "label": "StoreUserRequest",
+      "metadata": {}
+    },
+    {
+      "id": "arch:arch_service:userservice:1773092779713-l3kpgkfi",
+      "type": "arch_service",
+      "label": "UserService",
+      "metadata": {}
+    },
+    {
+      "id": "arch:arch_repository:userrepository:1773092779713-l3kpgkfi",
+      "type": "arch_repository",
+      "label": "UserRepository",
+      "metadata": {}
+    },
+    {
+      "id": "arch:arch_model:user:1773092779713-l3kpgkfi",
+      "type": "arch_model",
+      "label": "User",
+      "metadata": {}
+    },
+    {
+      "id": "arch:arch_database:database:1773092779713-l3kpgkfi",
+      "type": "arch_database",
+      "label": "Database",
+      "metadata": {}
+    },
+    {
+      "id": "arch:arch_eloquent:eloquent:1773092779713-l3kpgkfi",
+      "type": "arch_eloquent",
+      "label": "Eloquent",
+      "metadata": {}
+    },
+    {
+      "id": "arch:arch_migration:migrations:1773092779713-l3kpgkfi",
+      "type": "arch_migration",
+      "label": "Migrations",
+      "metadata": {}
+    },
+    {
+      "id": "arch:arch_seeder:seeders:1773092779713-l3kpgkfi",
+      "type": "arch_seeder",
+      "label": "Seeders",
+      "metadata": {}
+    },
+    {
+      "id": "arch:arch_factory:factory:1773092779713-l3kpgkfi",
+      "type": "arch_factory",
+      "label": "Factory",
+      "metadata": {}
+    },
+    {
+      "id": "arch:arch_resource:userresource:1773092779713-l3kpgkfi",
+      "type": "arch_resource",
+      "label": "UserResource",
+      "metadata": {}
+    },
+    {
+      "id": "arch:arch_event:usercreated:1773092779713-l3kpgkfi",
+      "type": "arch_event",
+      "label": "UserCreated",
+      "metadata": {}
+    },
+    {
+      "id": "arch:arch_handler:eventserviceprovider:1773092779713-l3kpgkfi",
+      "type": "arch_handler",
+      "label": "EventServiceProvider",
+      "metadata": {}
+    },
+    {
+      "id": "arch:arch_listener:sendwelcomeemail:1773092779713-l3kpgkfi",
+      "type": "arch_listener",
+      "label": "SendWelcomeEmail",
+      "metadata": {}
+    },
+    {
+      "id": "arch:arch_listener:logusercreated:1773092779713-l3kpgkfi",
+      "type": "arch_listener",
+      "label": "LogUserCreated",
+      "metadata": {}
+    },
+    {
+      "id": "arch:arch_listener:clearusercache:1773092779713-l3kpgkfi",
+      "type": "arch_listener",
+      "label": "ClearUserCache",
+      "metadata": {}
+    },
+    {
+      "id": "arch:arch_job:job:1773092779713-l3kpgkfi",
+      "type": "arch_job",
+      "label": "Job",
+      "metadata": {}
+    }
+  ],
+  "edges": [
+    {
+      "id": "arch:edge:arch:entry:arch:arch_router:router:1773092779713-l3kpgkfi",
+      "from": "arch:entry",
+      "to": "arch:arch_router:router:1773092779713-l3kpgkfi",
+      "type": "arch_dependency"
+    },
+    {
+      "id": "arch:edge:arch:arch_router:router:1773092779713-l3kpgkfi:arch:arch_middleware:authmiddleware:1773092779713-l3kpgkfi",
+      "from": "arch:arch_router:router:1773092779713-l3kpgkfi",
+      "to": "arch:arch_middleware:authmiddleware:1773092779713-l3kpgkfi",
+      "type": "arch_dependency"
+    },
+    {
+      "id": "arch:edge:arch:arch_middleware:authmiddleware:1773092779713-l3kpgkfi:arch:arch_controller:usercontroller:1773092779713-l3kpgkfi",
+      "from": "arch:arch_middleware:authmiddleware:1773092779713-l3kpgkfi",
+      "to": "arch:arch_controller:usercontroller:1773092779713-l3kpgkfi",
+      "type": "arch_dependency"
+    },
+    {
+      "id": "arch:edge:arch:arch_controller:usercontroller:1773092779713-l3kpgkfi:arch:arch_form_request:storeuserrequest:1773092779713-l3kpgkfi",
+      "from": "arch:arch_controller:usercontroller:1773092779713-l3kpgkfi",
+      "to": "arch:arch_form_request:storeuserrequest:1773092779713-l3kpgkfi",
+      "type": "arch_dependency"
+    },
+    {
+      "id": "arch:edge:arch:arch_form_request:storeuserrequest:1773092779713-l3kpgkfi:arch:arch_service:userservice:1773092779713-l3kpgkfi",
+      "from": "arch:arch_form_request:storeuserrequest:1773092779713-l3kpgkfi",
+      "to": "arch:arch_service:userservice:1773092779713-l3kpgkfi",
+      "type": "arch_dependency"
+    },
+    {
+      "id": "arch:edge:arch:arch_service:userservice:1773092779713-l3kpgkfi:arch:arch_repository:userrepository:1773092779713-l3kpgkfi",
+      "from": "arch:arch_service:userservice:1773092779713-l3kpgkfi",
+      "to": "arch:arch_repository:userrepository:1773092779713-l3kpgkfi",
+      "type": "arch_dependency"
+    },
+    {
+      "id": "arch:edge:arch:arch_repository:userrepository:1773092779713-l3kpgkfi:arch:arch_model:user:1773092779713-l3kpgkfi",
+      "from": "arch:arch_repository:userrepository:1773092779713-l3kpgkfi",
+      "to": "arch:arch_model:user:1773092779713-l3kpgkfi",
+      "type": "arch_dependency"
+    },
+    {
+      "id": "arch:edge:arch:arch_model:user:1773092779713-l3kpgkfi:arch:arch_eloquent:eloquent:1773092779713-l3kpgkfi",
+      "from": "arch:arch_model:user:1773092779713-l3kpgkfi",
+      "to": "arch:arch_eloquent:eloquent:1773092779713-l3kpgkfi",
+      "type": "arch_dependency"
+    },
+    {
+      "id": "arch:edge:arch:arch_eloquent:eloquent:1773092779713-l3kpgkfi:arch:arch_database:database:1773092779713-l3kpgkfi",
+      "from": "arch:arch_eloquent:eloquent:1773092779713-l3kpgkfi",
+      "to": "arch:arch_database:database:1773092779713-l3kpgkfi",
+      "type": "arch_dependency"
+    },
+    {
+      "id": "arch:edge:arch:arch_database:database:1773092779713-l3kpgkfi:arch:arch_migration:migrations:1773092779713-l3kpgkfi",
+      "from": "arch:arch_database:database:1773092779713-l3kpgkfi",
+      "to": "arch:arch_migration:migrations:1773092779713-l3kpgkfi",
+      "type": "arch_dependency"
+    },
+    {
+      "id": "arch:edge:arch:arch_database:database:1773092779713-l3kpgkfi:arch:arch_seeder:seeders:1773092779713-l3kpgkfi",
+      "from": "arch:arch_database:database:1773092779713-l3kpgkfi",
+      "to": "arch:arch_seeder:seeders:1773092779713-l3kpgkfi",
+      "type": "arch_dependency"
+    },
+    {
+      "id": "arch:edge:arch:arch_database:database:1773092779713-l3kpgkfi:arch:arch_factory:factory:1773092779713-l3kpgkfi",
+      "from": "arch:arch_database:database:1773092779713-l3kpgkfi",
+      "to": "arch:arch_factory:factory:1773092779713-l3kpgkfi",
+      "type": "arch_dependency"
+    },
+    {
+      "id": "arch:edge:arch:arch_controller:usercontroller:1773092779713-l3kpgkfi:arch:arch_resource:userresource:1773092779713-l3kpgkfi",
+      "from": "arch:arch_controller:usercontroller:1773092779713-l3kpgkfi",
+      "to": "arch:arch_resource:userresource:1773092779713-l3kpgkfi",
+      "type": "arch_dependency"
+    },
+    {
+      "id": "arch:edge:arch:arch_service:userservice:1773092779713-l3kpgkfi:arch:arch_event:usercreated:1773092779713-l3kpgkfi",
+      "from": "arch:arch_service:userservice:1773092779713-l3kpgkfi",
+      "to": "arch:arch_event:usercreated:1773092779713-l3kpgkfi",
+      "type": "arch_dependency"
+    },
+    {
+      "id": "arch:edge:arch:arch_event:usercreated:1773092779713-l3kpgkfi:arch:arch_handler:eventserviceprovider:1773092779713-l3kpgkfi",
+      "from": "arch:arch_event:usercreated:1773092779713-l3kpgkfi",
+      "to": "arch:arch_handler:eventserviceprovider:1773092779713-l3kpgkfi",
+      "type": "arch_dependency"
+    },
+    {
+      "id": "arch:edge:arch:arch_handler:eventserviceprovider:1773092779713-l3kpgkfi:arch:arch_listener:sendwelcomeemail:1773092779713-l3kpgkfi",
+      "from": "arch:arch_handler:eventserviceprovider:1773092779713-l3kpgkfi",
+      "to": "arch:arch_listener:sendwelcomeemail:1773092779713-l3kpgkfi",
+      "type": "arch_dependency"
+    },
+    {
+      "id": "arch:edge:arch:arch_handler:eventserviceprovider:1773092779713-l3kpgkfi:arch:arch_listener:logusercreated:1773092779713-l3kpgkfi",
+      "from": "arch:arch_handler:eventserviceprovider:1773092779713-l3kpgkfi",
+      "to": "arch:arch_listener:logusercreated:1773092779713-l3kpgkfi",
+      "type": "arch_dependency"
+    },
+    {
+      "id": "arch:edge:arch:arch_handler:eventserviceprovider:1773092779713-l3kpgkfi:arch:arch_listener:clearusercache:1773092779713-l3kpgkfi",
+      "from": "arch:arch_handler:eventserviceprovider:1773092779713-l3kpgkfi",
+      "to": "arch:arch_listener:clearusercache:1773092779713-l3kpgkfi",
+      "type": "arch_dependency"
+    },
+    {
+      "id": "arch:edge:arch:arch_listener:sendwelcomeemail:1773092779713-l3kpgkfi:arch:arch_job:job:1773092779713-l3kpgkfi",
+      "from": "arch:arch_listener:sendwelcomeemail:1773092779713-l3kpgkfi",
+      "to": "arch:arch_job:job:1773092779713-l3kpgkfi",
+      "type": "arch_dependency"
+    }
+  ]
+}

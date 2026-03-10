@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Brand Colors - Sahibinden.com Sarı ve Siyahı */
+  --primary-color: #ffd900; /* Sahibinden sarısı */
+  --primary-hover: #e6c300; /* Koyu sarı (hover) */
+  --primary-text: #1a1a1a; /* Sarı üstüne koyu metin */
+  
+  /* Backgrounds & Text */
+  --bg-color: #f7f9fa; /* Çok hafif gri, temiz görünümlü arkaplan */
+  --card-bg: #ffffff; /* Kartların ve Inputların arkaplanı */
+  --text-main: #222222; /* Ana metin rengi siyahımsı */
+  --text-muted: #666666; /* Daha soluk alt metinler */
+  --border-color: #e0e0e0;
+  
+  /* Design Tokens */
+  --border-radius-sm: 6px;
+  --border-radius-md: 10px;
+  --border-radius-lg: 16px;
+  
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.12);
+  
+  --transition-fast: 0.2s ease-in-out;
+  --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
