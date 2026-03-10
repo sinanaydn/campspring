@@ -1,8 +1,8 @@
 package com.sinan.rentACar.webApi.controllers;
 
 import java.security.Principal;
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,15 +29,15 @@ public class RentalsController {
 
     // Tüm kiralamaları listele (Admin için)
     @GetMapping
-    public List<GetAllRentalsResponse> getAll() {
-        return this.rentalService.getAll();
+    public Page<GetAllRentalsResponse> getAll(Pageable pageable) {
+        return this.rentalService.getAll(pageable);
     }
 
     // Giriş yapan kullanıcının kendi kiralamalarını listele
     @GetMapping("/me")
-    public List<GetAllRentalsResponse> getMyRentals(Principal principal) {
+    public Page<GetAllRentalsResponse> getMyRentals(Principal principal, Pageable pageable) {
         GetUserProfileResponse userProfile = this.userService.getProfile(principal.getName());
-        return this.rentalService.getByUserId(userProfile.getId());
+        return this.rentalService.getByUserId(userProfile.getId(), pageable);
     }
 
     // Yeni kiralama oluştur

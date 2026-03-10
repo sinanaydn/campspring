@@ -1,7 +1,7 @@
 package com.sinan.rentACar.webApi.controllers;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,8 +28,8 @@ public class BrandsController {
     private final BrandService brandService;
 
     @GetMapping
-    public List<GetAllBrandsResponse> getAll() {
-        return brandService.getAll();
+    public Page<GetAllBrandsResponse> getAll(Pageable pageable) {
+        return brandService.getAll(pageable);
     }
 
     @GetMapping("/{id}")

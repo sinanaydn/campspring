@@ -1,12 +1,13 @@
 package com.sinan.rentACar.business.abstracts;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.sinan.rentACar.business.requests.RegisterCustomerRequest;
 import com.sinan.rentACar.business.responses.GetCustomerResponse;
 
 public interface CustomerService {
     void add(RegisterCustomerRequest registerCustomerRequest);
-    List<GetCustomerResponse> getAll();
+    Page<GetCustomerResponse> getAll(Pageable pageable);
     GetCustomerResponse getById(int id);
 }

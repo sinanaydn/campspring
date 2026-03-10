@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -37,7 +38,19 @@ public class GlobalExceptionHandler {
         return validationProblemDetails;
     }
 
-    // 3. Sistemde Öngörülemeyen diğer genel hatalar (Internal Server Error)
+    // 3. Eşzamanlılık (Concurrency - Optimistic Locking) hataları yakalayıcısı
+    @ExceptionHandler
+    @ResponseStatus(code = HttpStatus.CONFLICT)
+    public ProblemDetails handleOptimisticLockingException(ObjectOptimisticLockingFailureException exception) {
+        ProblemDetails problemDetails = new ProblemDetails();
+        problemDetails.setTitle("Concurrency Conflict");
+        problemDetails.setDetail("İşlem yapmaya çalıştığınız kayıt başka bir kullanıcı tarafından az önce güncellendi. Lütfen sayfayı yenileyip tekrar deneyin.");
+        problemDetails.setType("http://mydomain.com/exceptions/conflict");
+        problemDetails.setStatus(HttpStatus.CONFLICT.value());
+        return problemDetails;
+    }
+
+    // 4. Sistemde Öngörülemeyen diğer genel hatalar (Internal Server Error)
     @ExceptionHandler
     @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
     public ProblemDetails handleOtherExceptions(Exception exception) {

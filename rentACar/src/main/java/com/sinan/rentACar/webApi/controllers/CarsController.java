@@ -1,7 +1,8 @@
 package com.sinan.rentACar.webApi.controllers;
 
 import java.io.IOException;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,8 +33,8 @@ public class CarsController {
     private final CarService carService;
 
     @GetMapping
-    public List<GetAllCarsResponse> getAll() {
-        return this.carService.getAll();
+    public Page<GetAllCarsResponse> getAll(Pageable pageable) {
+        return this.carService.getAll(pageable);
     }
 
     @PostMapping

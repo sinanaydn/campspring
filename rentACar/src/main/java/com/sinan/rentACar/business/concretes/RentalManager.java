@@ -1,9 +1,8 @@
 package com.sinan.rentACar.business.concretes;
 
 import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.sinan.rentACar.business.abstracts.RentalService;
@@ -30,19 +29,15 @@ public class RentalManager implements RentalService {
     private final ModelMapperService modelMapperService;
 
     @Override
-    public List<GetAllRentalsResponse> getAll() {
-        List<Rental> rentals = this.rentalRepository.findAll();
-        return rentals.stream()
-                .map(rental -> this.modelMapperService.forResponse().map(rental, GetAllRentalsResponse.class))
-                .collect(Collectors.toList());
+    public Page<GetAllRentalsResponse> getAll(Pageable pageable) {
+        Page<Rental> rentalPage = this.rentalRepository.findAll(pageable);
+        return rentalPage.map(rental -> this.modelMapperService.forResponse().map(rental, GetAllRentalsResponse.class));
     }
 
     @Override
-    public List<GetAllRentalsResponse> getByUserId(int userId) {
-        List<Rental> rentals = this.rentalRepository.findByUserId(userId);
-        return rentals.stream()
-                .map(rental -> this.modelMapperService.forResponse().map(rental, GetAllRentalsResponse.class))
-                .collect(Collectors.toList());
+    public Page<GetAllRentalsResponse> getByUserId(int userId, Pageable pageable) {
+        Page<Rental> rentalPage = this.rentalRepository.findByUserId(userId, pageable);
+        return rentalPage.map(rental -> this.modelMapperService.forResponse().map(rental, GetAllRentalsResponse.class));
     }
 
     @Override

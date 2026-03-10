@@ -40,5 +40,13 @@ Bu dosya, yapay zeka asistanının geliştirme süreçlerinde **bağlamı (conte
 6. **Normal Kullanıcılar (Müşteri) İçin Profil Sayfası:**
    - `UserService`, `UserManager`, `UsersController` oluşturuldu. (`GET /api/users/me`, `PUT /api/users/me/password`)
    - `RentalsController` içerisine, giriş yapan kullanıcının kendi kiralamalarını getiren `GET /api/rentals/me` eklendi.
-   - Frontend'de Yönetim Paneli yerine (Admin olmayan) normal kullanıcılar için `Profile.tsx` (Kullanıcı Bilgileri, Şifre Değiştirme, Kiralama Geçmişi) oluşturuldu.
-   - Routing mantığı güncellenerek Dashboard yetkileri ayrıldı ve "Anasayfa" butonu direkt Landing Page'e yönlendirildi.
+    - Frontend'de Yönetim Paneli yerine (Admin olmayan) normal kullanıcılar için `Profile.tsx` (Kullanıcı Bilgileri, Şifre Değiştirme, Kiralama Geçmişi) oluşturuldu.
+    - Routing mantığı güncellenerek Dashboard yetkileri ayrıldı ve "Anasayfa" butonu direkt Landing Page'e yönlendirildi.
+
+7. **Sanal Ödeme (Mock Payment) Entegrasyonu:**
+    - Kiralama işleminde kullanıcı "Kirala" dediğinde hemen backend'e istek atılması yerine araya sanal bir Kredi Kartı ödeme animasyonu (Mock Payment form) eklendi (Frontend tabanlı, 2 saniye fake delay). UI olarak `Landing.tsx` üzerinde adımlar (Step 1/2) oluşturuldu.
+
+8. **Gelişmiş Araç Özellikleri ve UI Filtreleri (`FuelType` & `TransmissionType`):**
+    - Backend `Car` varlığına `fuelType` ve `transmissionType` (Enum, STRING) alanları eklendi. Update/Create işlemleri güncellendi.
+    - Frontend `Landing.tsx` üzerinde Sadece Otomatik Toggle butonu ve Yakıt Tipi Select menüsü ile yeni özelliklere göre filtreleme sunuldu.
+    - Vitrindeki araç kartlarının (Car Card) üzerine ilgili özellikler şık rozetler (Badge) olarak işlendi.

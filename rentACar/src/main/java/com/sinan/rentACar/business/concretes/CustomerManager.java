@@ -1,7 +1,7 @@
 package com.sinan.rentACar.business.concretes;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -45,11 +45,9 @@ public class CustomerManager implements CustomerService {
     }
 
     @Override
-    public List<GetCustomerResponse> getAll() {
-        List<Customer> customers = this.customerRepository.findAll();
-        return customers.stream()
-                .map(customer -> this.modelMapperService.forResponse().map(customer, GetCustomerResponse.class))
-                .collect(Collectors.toList());
+    public Page<GetCustomerResponse> getAll(Pageable pageable) {
+        Page<Customer> customerPage = this.customerRepository.findAll(pageable);
+        return customerPage.map(customer -> this.modelMapperService.forResponse().map(customer, GetCustomerResponse.class));
     }
 
     @Override

@@ -1,8 +1,7 @@
 package com.sinan.rentACar.business.concretes;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.sinan.rentACar.business.abstracts.CarModelService;
@@ -22,12 +21,9 @@ public class CarModelManager implements CarModelService {
     private final ModelMapperService modelMapperService;
     
     @Override
-    public List<GetAllCarModelResponse> getAll() {
-        List<CarModel> carModels = this.carModelRepository.findAll();
-        List<GetAllCarModelResponse> getAllCarModelResponses = carModels.stream()
-        .map(carModel -> this.modelMapperService.forResponse().map(carModel, GetAllCarModelResponse.class))
-        .collect(Collectors.toList());
-        return getAllCarModelResponses;
+    public Page<GetAllCarModelResponse> getAll(Pageable pageable) {
+        Page<CarModel> carModelPage = this.carModelRepository.findAll(pageable);
+        return carModelPage.map(carModel -> this.modelMapperService.forResponse().map(carModel, GetAllCarModelResponse.class));
     }
 
     @Override

@@ -1,8 +1,7 @@
 package com.sinan.rentACar.business.concretes;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.sinan.rentACar.business.abstracts.BrandService;
@@ -25,12 +24,9 @@ public class BrandManager  implements BrandService {
     private final BrandBusinessRules brandBusinessRules;
 
     @Override
-    public List<GetAllBrandsResponse> getAll() {
-        List<Brand> brands = this.brandRepository.findAll();
-        List<GetAllBrandsResponse> getAllBrandsResponses = brands.stream()
-        .map(brand -> this.modelMapperService.forResponse().map(brand, GetAllBrandsResponse.class))
-        .collect(Collectors.toList());
-        return getAllBrandsResponses;
+    public Page<GetAllBrandsResponse> getAll(Pageable pageable) {
+        Page<Brand> brandPage = this.brandRepository.findAll(pageable);
+        return brandPage.map(brand -> this.modelMapperService.forResponse().map(brand, GetAllBrandsResponse.class));
     }
 
     @Override

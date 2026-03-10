@@ -1,12 +1,13 @@
 package com.sinan.rentACar.business.abstracts;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.sinan.rentACar.business.requests.CreateRentalRequest;
 import com.sinan.rentACar.business.responses.GetAllRentalsResponse;
 
 public interface RentalService {
-    List<GetAllRentalsResponse> getAll();
-    List<GetAllRentalsResponse> getByUserId(int userId);
+    Page<GetAllRentalsResponse> getAll(Pageable pageable);
+    Page<GetAllRentalsResponse> getByUserId(int userId, Pageable pageable);
     void add(CreateRentalRequest createRentalRequest, String userEmail);
 }

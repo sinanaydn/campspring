@@ -1,8 +1,8 @@
 package com.sinan.rentACar.business.concretes;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,12 +29,9 @@ public class CarManager implements CarService {
     private final ImageService imageService;
 
     @Override
-    public List<GetAllCarsResponse> getAll() {
-        List<Car> cars = this.carRepository.findAll();
-        List<GetAllCarsResponse> carResponses = cars.stream()
-                .map(car -> this.modelMapperService.forResponse().map(car, GetAllCarsResponse.class))
-                .collect(Collectors.toList());
-        return carResponses;
+    public Page<GetAllCarsResponse> getAll(Pageable pageable) {
+        Page<Car> carPage = this.carRepository.findAll(pageable);
+        return carPage.map(car -> this.modelMapperService.forResponse().map(car, GetAllCarsResponse.class));
     }
 
     @Override
