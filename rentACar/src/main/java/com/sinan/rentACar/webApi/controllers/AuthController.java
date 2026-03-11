@@ -12,12 +12,14 @@ import com.sinan.rentACar.business.requests.LoginRequest;
 import com.sinan.rentACar.business.requests.RegisterCustomerRequest;
 import com.sinan.rentACar.business.responses.AuthResponse;
 
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("/api/auth")
 @AllArgsConstructor
+@RateLimiter(name = "auth-rate-limiter")
 public class AuthController {
 
     private final AuthService authService;

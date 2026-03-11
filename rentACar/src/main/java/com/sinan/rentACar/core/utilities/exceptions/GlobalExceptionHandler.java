@@ -5,6 +5,8 @@ import java.util.Map;
 
 import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -63,7 +65,31 @@ public class GlobalExceptionHandler {
         return problemDetails;
     }
 
-    // 5. Sistemde Öngörülemeyen diğer genel hatalar (Internal Server Error)
+    // 5. Yanlış Kullanıcı Adı veya Şifre (BadCredentialsException) hataları yakalayıcısı
+    @ExceptionHandler
+    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+    public ProblemDetails handleBadCredentialsException(BadCredentialsException exception) {
+        ProblemDetails problemDetails = new ProblemDetails();
+        problemDetails.setTitle("Unauthorized");
+        problemDetails.setDetail("E-posta adresiniz veya şifreniz hatalı. Lütfen kontrol edip tekrar deneyin.");
+        problemDetails.setType("http://mydomain.com/exceptions/unauthorized");
+        problemDetails.setStatus(HttpStatus.UNAUTHORIZED.value());
+        return problemDetails;
+    }
+
+    // 6. Kullanıcı Bulunamadı (UsernameNotFoundException) hataları yakalayıcısı
+    @ExceptionHandler
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    public ProblemDetails handleUsernameNotFoundException(UsernameNotFoundException exception) {
+        ProblemDetails problemDetails = new ProblemDetails();
+        problemDetails.setTitle("User Not Found");
+        problemDetails.setDetail(exception.getMessage()); // "Sistemde böyle bir e-posta adresine sahip kullanıcı bulunamadı."
+        problemDetails.setType("http://mydomain.com/exceptions/not-found");
+        problemDetails.setStatus(HttpStatus.NOT_FOUND.value());
+        return problemDetails;
+    }
+
+    // 7. Sistemde Öngörülemeyen diğer genel hatalar (Internal Server Error)
     @ExceptionHandler
     @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
     public ProblemDetails handleOtherExceptions(Exception exception) {

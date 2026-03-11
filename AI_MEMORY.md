@@ -50,3 +50,23 @@ Bu dosya, yapay zeka asistanının geliştirme süreçlerinde **bağlamı (conte
     - Backend `Car` varlığına `fuelType` ve `transmissionType` (Enum, STRING) alanları eklendi. Update/Create işlemleri güncellendi.
     - Frontend `Landing.tsx` üzerinde Sadece Otomatik Toggle butonu ve Yakıt Tipi Select menüsü ile yeni özelliklere göre filtreleme sunuldu.
     - Vitrindeki araç kartlarının (Car Card) üzerine ilgili özellikler şık rozetler (Badge) olarak işlendi.
+
+### 11 Mart 2026 - Faz 2: Performans, Güvenlik ve Kısıtlamalar (Production-Ready)
+1. **Spring Cache (Önbellekleme) Entegrasyonu:**
+    - Performansı artırmak ve veritabanı yükünü hafifletmek için Spring Boot Starter Cache kullanıldı.
+    - `RentACarApplication` sınıfına `@EnableCaching` eklendi.
+    - Sık okunan ama nadir değişen `BrandManager` (Markalar) ve `CarModelManager` (Modeller) listelerine `@Cacheable` eklendi.
+    - Veri eklendiğinde veya silindiğinde önbelleğin temizlenmesi (veri tutarlılığı) için `@CacheEvict` kullanıldı. Bu aşamada in-memory çalışıldı, ileride Redis'e geçilecek.
+
+2. **Resilience4j ile Rate Limiting (Aşırı İstek / DDoS Koruması):**
+    - Kötü niyetli kullanıcıların API'yi spamlamasını engellemek için Resilience4j Rate Limiter eklendi.
+    - `application.properties` içerisinde:
+        - `api-rate-limiter`: `CarsController` ve `RentalsController` gibi endpoint'ler için saniyede 20 istek limiti.
+        - `auth-rate-limiter`: `AuthController` (Login/Register) için dakikada 6 istek (Brute Force koruması).
+    - `GlobalExceptionHandler` içerisine `RequestNotPermitted` sınıfı eklenip HTTP 429 Too Many Requests durum kodu dönülmesi sağlandı.
+    - Frontend `Login.tsx` tarafında HTTP 429 yakalandığında buton disable edilip 59 saniyeden geriye sayan görsel bir bekleme (Countdown) kalkanı kodlandı.
+
+3. **Gelişmiş Spring Security Hata Yönetimi & Zamanlama Saldırısı (Timing Attack) Koruması:**
+    - Spring Security'nin standart "Kullanıcı Adı veya Şifre Hatalı" (hideUserNotFoundExceptions=true) mantığı `ApplicationConfig` üzerinden false yapıldı.
+    - `GlobalExceptionHandler` içerisine `BadCredentialsException` (Yanlış şifre -> HTTP 401) ve `UsernameNotFoundException` (Kayıtlı olmayan e-posta -> HTTP 404) için özel ve anlamlı Problem Details yanıtları eklendi.
+    - **ÇOK ÖNEMLİ:** Kötü niyetli kişilerin e-posta sorgusu sırasındaki gecikme farklarından (BCrypt hesaplama süresi/0.5sn) sistemde kayıtlı e-postaları tahmin etmesini (Timing Attack) engellemek adına; `ApplicationConfig` içinde kullanıcı bulunamadığı durumda dahi fake (sahte) bir `BCryptPasswordEncoder().encode("...")` çalıştırılarak gecikme (delay) simüle edildi.

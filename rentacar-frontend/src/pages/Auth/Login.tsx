@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import styles from './Auth.module.css';
 import Input from '../../components/Input/Input';
@@ -11,6 +11,22 @@ const Login: React.FC = () => {
     const [password, setPassword] = useState('');
     const [errorMSG, setErrorMSG] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [countdown, setCountdown] = useState<number | null>(null);
+
+    useEffect(() => {
+        let timer: ReturnType<typeof setTimeout>;
+        if (countdown !== null && countdown > 0) {
+            timer = setTimeout(() => {
+                setCountdown((prev) => (prev !== null ? prev - 1 : null));
+            }, 1000);
+        } else if (countdown === 0) {
+            setCountdown(null);
+            setErrorMSG(null);
+        }
+        return () => {
+            if (timer) clearTimeout(timer);
+        };
+    }, [countdown]);
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -22,7 +38,10 @@ const Login: React.FC = () => {
             // Başarılı olursa Dashboard (Panel) veya Anasayfaya gönder
             navigate('/dashboard');
         } catch (error: any) {
-            if (error.response && error.response.data && error.response.data.detail) {
+            if (error.response && error.response.status === 429) {
+                setErrorMSG("Çok fazla istek gönderdiniz. Lütfen sürenin bitmesini bekleyin.");
+                setCountdown(59);
+            } else if (error.response && error.response.data && error.response.data.detail) {
                 setErrorMSG(error.response.data.detail);
             } else {
                 setErrorMSG("Giriş başarısız. Lütfen e-posta ve şifrenizi kontrol edin.");
@@ -64,8 +83,8 @@ const Login: React.FC = () => {
                     />
 
                     <div className={styles.authActions}>
-                        <Button type="submit" fullWidth disabled={isLoading}>
-                            {isLoading ? 'Giriş Yapılıyor...' : 'Giriş Yap'}
+                        <Button type="submit" fullWidth disabled={isLoading || (countdown !== null && countdown > 0)}>
+                            {isLoading ? 'Giriş Yapılıyor...' : countdown !== null && countdown > 0 ? `Geçici Olarak Engellendi (${countdown}s)` : 'Giriş Yap'}
                         </Button>
                     </div>
                 </form>
