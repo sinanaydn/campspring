@@ -34,7 +34,8 @@ public class SecurityConfig {
                     "/api/auth/**",
                     "/v3/api-docs/**",
                     "/swagger-ui/**",
-                    "/swagger-ui.html"
+                    "/swagger-ui.html",
+                    "/actuator/**"
                 ).permitAll()
                 // Müşterilerin görebilmesi için Liste getirme (GET) yolları herkese açık
                 .requestMatchers(HttpMethod.GET, "/api/brands/**", "/api/carmodels/**", "/api/cars/**").permitAll()

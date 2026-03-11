@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- Console'a yazdırılacak loglar listesinin (standart akış) renkli görünümü -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Dosyaya (.log uzantılı) yazılacak logların ayarları -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- Logların kaydedileceği ana klasör ve dosya ismi -->
+        <file>logs/rentacar-app.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- Her gün için yeni bir log dosyası oluştur, eskiyi tarihle isimlendir arşivle -->
+            <fileNamePattern>logs/rentacar-app-%d{yyyy-MM-dd}.log</fileNamePattern>
+
+            <!-- Geçmişe dönük maksimum x günlük log dosyası sakla, daha eskisini bilgisayardan sil -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Projenin tamamı (root) için INFO seviyesindeki logları hem Console'a hem Dosyaya YAZ! -->
+    <root level="info">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
+    </root>
+
+    <!-- Geliştiricinin kendi yazdığı loglar için DEBUG seviyesinden yakala -->
+    <logger name="com.sinan.rentACar" level="debug" />
+
+</configuration>
