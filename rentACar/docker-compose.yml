@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  # 1. Servis: PostgreSQL Veritabanı
+  db:
+    image: postgres:16-alpine # En güncel ve hafif sürüm
+    container_name: rentacar_db
+    restart: always # Çökerse kendi kendine yeniden başlasın
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: rentACar
+    ports:
+      # Senin bilgisayarında hali hazırda 5432 dolu olduğu için çakışma olmasın
+      # Dışarıdan 5433 ile gelindiğinde, içeride 5432'ye yönlendir
+      - "5433:5432" 
+    volumes:
+      # Konteyner silinse bile veritabanı silinmesin diye diskteki kalıcı alan:
+      - rentacar_pgdata:/var/lib/postgresql/data
+    networks:
+      - rentacar_network
+
+  # 2. Servis: Bizim Spring Boot Uygulamamız
+  app:
+    build: . # Yanındaki Dockerfile'ı okuyup kendi imajını derle
+    container_name: rentacar_backend
+    restart: always
+    ports:
+      - "8080:8080" # Uygulamaya eskisi gibi 8080'den erişeceğiz
+    environment:
+      # application.properties tarafında tanımladığımız Dinamik Çevre Değişkenleri:
+      # En kritik nokta: Veritabanı host adı 'localhost' değil, db servisinin adı olan 'db' oldu!
+      - DB_URL=jdbc:postgresql://db:5432/rentACar
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=1234
+      - ADMIN_EMAIL=admin@rentacar.com
+      - ADMIN_PASSWORD=12345
+    env_file:
+      - .env
+    depends_on:
+      # Veritabanı tam ayağa kalkmadan Spring'i kaldırma (Hata vermemesi için)
+      - db
+    networks:
+      - rentacar_network
+
+# Kalıcı veriler için isimlendirilmiş bir cüzdan (Volume) tanımı
+volumes:
+  rentacar_pgdata:
+
+# Ortak ve kapalı bir sanal ağ oluşturuyoruz (Security & İletişim İçin)
+networks:
+  rentacar_network:
+    driver: bridge

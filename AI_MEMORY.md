@@ -70,3 +70,15 @@ Bu dosya, yapay zeka asistanının geliştirme süreçlerinde **bağlamı (conte
     - Spring Security'nin standart "Kullanıcı Adı veya Şifre Hatalı" (hideUserNotFoundExceptions=true) mantığı `ApplicationConfig` üzerinden false yapıldı.
     - `GlobalExceptionHandler` içerisine `BadCredentialsException` (Yanlış şifre -> HTTP 401) ve `UsernameNotFoundException` (Kayıtlı olmayan e-posta -> HTTP 404) için özel ve anlamlı Problem Details yanıtları eklendi.
     - **ÇOK ÖNEMLİ:** Kötü niyetli kişilerin e-posta sorgusu sırasındaki gecikme farklarından (BCrypt hesaplama süresi/0.5sn) sistemde kayıtlı e-postaları tahmin etmesini (Timing Attack) engellemek adına; `ApplicationConfig` içinde kullanıcı bulunamadığı durumda dahi fake (sahte) bir `BCryptPasswordEncoder().encode("...")` çalıştırılarak gecikme (delay) simüle edildi.
+
+### 11-12 Mart 2026 - Faz 3 & Faz 4: İzlenebilirlik ve Dockerization
+1. **Spring Boot Actuator (Sağlık Monitörü):**
+    - `spring-boot-starter-actuator` eklendi.
+    - `/actuator/health` endpoint'i dışarıya açık hale getirildi (`SecurityConfig` güncellendi). Artık sunucu, veritabanı bağlantısı ve disk kapasitesi gibi hayati metrikleri anlık JSON olarak dönüyor.
+2. **Logback Entegrasyonu (Gelişmiş Loglama):**
+    - `src/main/resources/logback-spring.xml` oluşturuldu.
+    - Konsola akan tüm logların, otomatik olarak `logs/rentacar-app.log` dosyasına yazılması ve her gün için (maks 30 günlük) arşivlenmesi sağlandı.
+3. **Dockerization (Konteynerleştirme Sınıf Atlaması):**
+    - **`Dockerfile` (Multi-stage Build):** Önce devasa boyutlu `eclipse-temurin:25-jdk-alpine` ile Maven derlemesi yapıldı, ardından sistem sadece JRE içeren minik `eclipse-temurin:25-jre-alpine` içerisine kurularak 8080 portundan yayına açıldı.
+    - **`docker-compose.yml`:** Proje için bir Orkestra şefi yaratıldı. PostgreSQL (16-alpine) ve Spring Boot projesi izole bir `rentacar_network` içerisine hapsedildi.
+    - `application.properties` dinamikleştirilerek; `DB_URL`, `ADMIN_EMAIL` gibi veriler Environment Variables'a (Çevre değişkenleri) bağlandı. Artık kodlar, Windows makinende çalışırken farklı, sunucu (Docker) üzerinde çalışırken farklı davranabilecek elastikiyete kavuştu.
