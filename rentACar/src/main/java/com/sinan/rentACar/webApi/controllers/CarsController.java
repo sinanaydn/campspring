@@ -23,12 +23,14 @@ import com.sinan.rentACar.business.requests.CreateCarRequest;
 import com.sinan.rentACar.business.requests.UpdateCarRequest;
 import com.sinan.rentACar.business.responses.GetAllCarsResponse;
 
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("/api/cars")
 @AllArgsConstructor
+@RateLimiter(name = "api-rate-limiter")
 public class CarsController {
     private final CarService carService;
 

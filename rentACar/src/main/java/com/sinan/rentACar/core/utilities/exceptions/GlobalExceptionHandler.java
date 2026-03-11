@@ -3,6 +3,7 @@ package com.sinan.rentACar.core.utilities.exceptions;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import org.springframework.http.HttpStatus;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.validation.FieldError;
@@ -50,7 +51,19 @@ public class GlobalExceptionHandler {
         return problemDetails;
     }
 
-    // 4. Sistemde Öngörülemeyen diğer genel hatalar (Internal Server Error)
+    // 4. Rate Limiting (Aşırı İstek / DDoS Koruması) hataları yakalayıcısı
+    @ExceptionHandler
+    @ResponseStatus(code = HttpStatus.TOO_MANY_REQUESTS)
+    public ProblemDetails handleRateLimiterException(RequestNotPermitted exception) {
+        ProblemDetails problemDetails = new ProblemDetails();
+        problemDetails.setTitle("Too Many Requests");
+        problemDetails.setDetail("Çok fazla istek gönderdiniz. Lütfen biraz bekleyip tekrar deneyin.");
+        problemDetails.setType("http://mydomain.com/exceptions/too-many-requests");
+        problemDetails.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
+        return problemDetails;
+    }
+
+    // 5. Sistemde Öngörülemeyen diğer genel hatalar (Internal Server Error)
     @ExceptionHandler
     @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
     public ProblemDetails handleOtherExceptions(Exception exception) {

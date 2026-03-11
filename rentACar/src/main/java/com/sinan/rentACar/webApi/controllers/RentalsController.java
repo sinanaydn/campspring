@@ -17,12 +17,14 @@ import com.sinan.rentACar.business.requests.CreateRentalRequest;
 import com.sinan.rentACar.business.responses.GetAllRentalsResponse;
 import com.sinan.rentACar.business.responses.GetUserProfileResponse;
 
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("/api/rentals")
 @AllArgsConstructor
+@RateLimiter(name = "api-rate-limiter")
 public class RentalsController {
     private final RentalService rentalService;
     private final UserService userService;

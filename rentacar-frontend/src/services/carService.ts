@@ -1,10 +1,10 @@
 import axiosInstance from './axiosInstance';
-import { type CarResponse, type CreateCarRequest, type UpdateCarRequest } from '../models/types';
+import { type CarResponse, type CreateCarRequest, type UpdateCarRequest, type PageResponse } from '../models/types';
 
 const CarService = {
     getAll: async (): Promise<CarResponse[]> => {
-        const response = await axiosInstance.get<CarResponse[]>('/cars');
-        return response.data;
+        const response = await axiosInstance.get<PageResponse<CarResponse>>('/cars');
+        return response.data.content;
     },
 
     add: async (request: CreateCarRequest): Promise<void> => {
