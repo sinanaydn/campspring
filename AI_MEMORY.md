@@ -82,3 +82,16 @@ Bu dosya, yapay zeka asistanının geliştirme süreçlerinde **bağlamı (conte
     - **`Dockerfile` (Multi-stage Build):** Önce devasa boyutlu `eclipse-temurin:25-jdk-alpine` ile Maven derlemesi yapıldı, ardından sistem sadece JRE içeren minik `eclipse-temurin:25-jre-alpine` içerisine kurularak 8080 portundan yayına açıldı.
     - **`docker-compose.yml`:** Proje için bir Orkestra şefi yaratıldı. PostgreSQL (16-alpine) ve Spring Boot projesi izole bir `rentacar_network` içerisine hapsedildi.
     - `application.properties` dinamikleştirilerek; `DB_URL`, `ADMIN_EMAIL` gibi veriler Environment Variables'a (Çevre değişkenleri) bağlandı. Artık kodlar, Windows makinende çalışırken farklı, sunucu (Docker) üzerinde çalışırken farklı davranabilecek elastikiyete kavuştu.
+
+### 12 Mart 2026 - Faz 6: Küresel Önbellek (Global Caching - Redis)
+1. **Redis Konteyner Entegrasyonu:**
+    - `docker-compose.yml` içerisine süper hafif `redis:7-alpine` eklendi. Uygulama kalıcı veri (.vhd) ile bağlandı.
+    - Spring Boot uygulamasının pom.xml'ine `spring-boot-starter-data-redis` entegre edildi.
+2. **Spring Boot -> Redis Yönlendirmesi:**
+    - `application.properties` içerisinde `spring.cache.type=redis` komutu verilerek uygulamanın Java RAM belleğinden vazgeçip doğrudan Redis sunucusuna yönlenmesi sağlandı.
+    - `REDIS_HOST` ve `REDIS_PORT` ayarları hem `.env` içine hem de `application.properties` içine tanımlandı. Docker network içi iletişim sayesinde `redis` ismiyle konteynerler arası bağlantı sağlandı.
+3. **Serileştirme (Serialization) ve Sorun Giderimi:**
+    - Redis, içine atılan verilerin byte veya JSON formatında olmasını bekler. Spring'in varsayılan Redis aracı Java Serializasyonunu kullanır.
+    - Tüm `Response` (DTO) sınıflarına (`GetAllBrandsResponse`, `GetAllCarsResponse` vb.) `implements Serializable` arayüzü eklendi. Bu sayede hiçbir Controller veya Service kodunda (eski `@Cacheable` notasyonları dahil) değişiklik yapmadan kusursuz bir geçiş tamamlandı.
+    - Hata ayıklama sürecinde Docker üzerinde biriken yaklaşık 12 GB'lık hatalı imaj ve build önbellekleri (Cache) `docker system prune` ile temizlenerek disk optimize edildi.
+

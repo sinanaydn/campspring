@@ -20,7 +20,19 @@ services:
     networks:
       - rentacar_network
 
-  # 2. Servis: Bizim Spring Boot Uygulamamız
+  # 2. Servis: Redis Global Cache
+  redis:
+    image: redis:7-alpine
+    container_name: rentacar_redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - rentacar_redis_data:/data
+    networks:
+      - rentacar_network
+
+  # 3. Servis: Bizim Spring Boot Uygulamamız
   app:
     build: . # Yanındaki Dockerfile'ı okuyup kendi imajını derle
     container_name: rentacar_backend
@@ -35,17 +47,20 @@ services:
       - DB_PASSWORD=1234
       - ADMIN_EMAIL=admin@rentacar.com
       - ADMIN_PASSWORD=12345
+      - REDIS_HOST=redis
     env_file:
       - .env
     depends_on:
       # Veritabanı tam ayağa kalkmadan Spring'i kaldırma (Hata vermemesi için)
       - db
+      - redis
     networks:
       - rentacar_network
 
 # Kalıcı veriler için isimlendirilmiş bir cüzdan (Volume) tanımı
 volumes:
   rentacar_pgdata:
+  rentacar_redis_data:
 
 # Ortak ve kapalı bir sanal ağ oluşturuyoruz (Security & İletişim İçin)
 networks:
